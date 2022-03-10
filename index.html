@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+        }
+        .center {
+            margin: auto;
+        }
+        #canvas {
+            /* border: 1px solid black; */
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        // variable globale
+        let afficherObj;
+        let dernierObjetClique;
+
+        // définir le canvas
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        canvas.width = 1200;
+        canvas.height = 700;
+
+        // importer les images
+        let images = {}
+        let nbImage = 8;
+        let decrase = () => {
+            nbImage--;
+            if (nbImage == 0) afficherObj();
+        }
+
+        images.nuage = new Image();
+        images.nuage.src = 'cloud.svg';
+        images.nuage.width = 400;
+        images.nuage.height = 300;
+        images.nuage.addEventListener("load", decrase);
+
+        images.alexa = new Image();
+        images.alexa.src = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpluspng.com%2Fimg-png%2Famazon-alexa-png-getting-amazon-echo-s-alexa-to-notify-family-of-an-emergency-using-ifttt-1000.png&f=1&nofb=1';
+        images.alexa.width = 100;
+        images.alexa.height = 100;
+        images.alexa.addEventListener("load", decrase);
+
+        images.wifi = new Image();
+        images.wifi.src = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fst4.depositphotos.com%2F1003549%2F23285%2Fv%2F450%2Fdepositphotos_232854200-stock-illustration-wifi-symbol-icon-blue-simple.jpg&f=1&nofb=1';
+        images.wifi.width = 100;
+        images.wifi.height = 90;
+        images.wifi.addEventListener("load", decrase);
+
+        images.iphone = new Image();
+        images.iphone.src = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpurepng.com%2Fpublic%2Fuploads%2Flarge%2Fpurepng.com-apple-iphone-xappleapple-iphonephonesmartphonemobile-devicetouch-screeniphone-xiphone-10electronicsobjects-2515306895701eqxj.png&f=1&nofb=1';
+        images.iphone.width = 100;
+        images.iphone.height = 100;
+        images.iphone.addEventListener("load", decrase);
+
+        images.prise = new Image();
+        images.prise.src = 'https://cdn.discordapp.com/attachments/624922182438617098/948631964372578334/plug.png';
+        images.prise.width = 100;
+        images.prise.height = 100;
+        images.prise.addEventListener("load", decrase);
+
+        images.priseGr = new Image();
+        images.priseGr.src = 'https://cdn.discordapp.com/attachments/624922182438617098/948614868838269009/plugGr.png';
+        images.priseGr.width = 100;
+        images.priseGr.height = 100;
+        images.priseGr.addEventListener("load", decrase);
+
+        images.ampouleOff = new Image();
+        images.ampouleOff.src = 'ampouleOff.svg';
+        images.ampouleOff.width = 100;
+        images.ampouleOff.height = 100;
+        images.ampouleOff.addEventListener("load", decrase);
+
+        images.ampouleOn = new Image();
+        images.ampouleOn.src = 'ampouleOn.svg';
+        images.ampouleOn.width = 100;
+        images.ampouleOn.height = 100;
+        images.ampouleOn.addEventListener("load", decrase);
+
+        // définir les positions
+        lsPos = {
+            iphone: {
+                x: canvas.width * 0.1,
+                y: canvas.height * 0.3,
+            },
+            alexa: {
+                x: canvas.width * 0.1,
+                y: canvas.height * 0.7,
+            },
+            nuage: {
+                x: canvas.width * 0.3,
+                y: canvas.height * 0.5,
+            },
+            prise1: {
+                x: canvas.width * 0.55,
+                y: canvas.height * 0.2,
+            },
+            prise2: {
+                x: canvas.width * 0.55,
+                y: canvas.height * 0.4,
+            },
+            prise3: {
+                x: canvas.width * 0.55,
+                y: canvas.height * 0.6,
+            },
+            prise4: {
+                x: canvas.width * 0.55,
+                y: canvas.height * 0.8,
+            },
+        }
+
+        // afficher les objets graphique
+        afficherObj = () => {
+            // iphone
+            let objet = "iphone";
+            let img = images[objet];
+            let pos = lsPos[objet];
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+
+            // alexa
+            objet = "alexa";
+            img = images[objet];
+            pos = lsPos[objet];
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+
+            // réseau
+            objet = "nuage";
+            img = images[objet];
+            pos = lsPos[objet];
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+
+            objet = "wifi";
+            img = images[objet];
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+
+            // prise 1
+            img = images.prise;
+            pos = lsPos.prise1;
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+            
+            img = images.ampouleOff;
+            ctx.drawImage(img, pos.x - img.width / 1.7 + img.width, pos.y - img.height / 2, img.width, img.height);
+
+            // prise 2
+            img = images.priseGr;
+            pos = lsPos.prise2;
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+
+            img = images.ampouleOn;
+            ctx.drawImage(img, pos.x - img.width / 1.7 + img.width, pos.y - img.height / 2, img.width, img.height);
+
+            // prise 3
+            img = images.priseGr;
+            pos = lsPos.prise3;
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+
+            img = images.ampouleOn;
+            ctx.drawImage(img, pos.x - img.width / 1.7 + img.width, pos.y - img.height / 2, img.width, img.height);
+
+            // prise 4
+            img = images.prise;
+            pos = lsPos.prise4;
+            ctx.drawImage(img, pos.x - img.width / 2, pos.y - img.height / 2, img.width, img.height);
+
+            img = images.ampouleOff;
+            ctx.drawImage(img, pos.x - img.width / 1.7 + img.width, pos.y - img.height / 2, img.width, img.height);
+        }
+
+        // activer l'interaction
+        canvas.addEventListener("click", evt => {
+            // iphone est cliqué
+            if (
+                (evt.offsetX > lsPos.iphone.x - images.iphone.width / 2 && evt.offsetX < lsPos.iphone.x + images.iphone.width / 2) &&
+                (evt.offsetY > lsPos.iphone.y - images.iphone.height / 2 && evt.offsetY < lsPos.iphone.y + images.iphone.height / 2)
+            ) {
+                dernierObjetClique = "iphone";
+            }
+            // alexa est cliqué
+            else if (
+                (evt.offsetX > lsPos.alexa.x - images.alexa.width / 2 && evt.offsetX < lsPos.alexa.x + images.alexa.width / 2) &&
+                (evt.offsetY > lsPos.alexa.y - images.alexa.height / 2 && evt.offsetY < lsPos.alexa.y + images.alexa.height / 2)
+            ) {
+                dernierObjetClique = "alexa";
+            }
+            // prise 1 est cliqué
+            else if (
+                (evt.offsetX > lsPos.prise1.x - images.prise.width / 2 && evt.offsetX < lsPos.prise1.x + images.prise.width / 2) &&
+                (evt.offsetY > lsPos.prise1.y - images.prise.height / 2 && evt.offsetY < lsPos.prise1.y + images.prise.height / 2)
+            ) {
+                dernierObjetClique = "prise1";
+            }
+            console.log(dernierObjetClique)
+        });
+    </script>
+</body>
+</html>

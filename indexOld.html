@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+        }
+        .center {
+            margin: auto;
+        }
+        #canvas {
+            /* border: 1px solid black; */
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <canvas id="canvas"></canvas>
+        <!-- <button id="init">init</button> -->
+    </div>
+
+    <script>
+        let images = {}
+        images.cloud = new Image();
+        images.cloud.src = 'cloud.svg';
+        images.cloud.width = 400;
+        images.cloud.height = 300;
+
+        images.alexa = new Image();
+        images.alexa.src = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpluspng.com%2Fimg-png%2Famazon-alexa-png-getting-amazon-echo-s-alexa-to-notify-family-of-an-emergency-using-ifttt-1000.png&f=1&nofb=1';
+        images.alexa.width = 100;
+        images.alexa.height = 100;
+
+        images.wifi = new Image();
+        images.wifi.src = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fst4.depositphotos.com%2F1003549%2F23285%2Fv%2F450%2Fdepositphotos_232854200-stock-illustration-wifi-symbol-icon-blue-simple.jpg&f=1&nofb=1';
+        images.wifi.width = 100;
+        images.wifi.height = 90;
+
+        images.iphone = new Image();
+        images.iphone.src = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpurepng.com%2Fpublic%2Fuploads%2Flarge%2Fpurepng.com-apple-iphone-xappleapple-iphonephonesmartphonemobile-devicetouch-screeniphone-xiphone-10electronicsobjects-2515306895701eqxj.png&f=1&nofb=1';
+        images.iphone.width = 100;
+        images.iphone.height = 100;
+
+        images.plug = new Image();
+        images.plug.src = 'https://cdn.discordapp.com/attachments/624922182438617098/948631964372578334/plug.png';
+        images.plug.width = 100;
+        images.plug.height = 100;
+
+        images.plugGr = new Image();
+        images.plugGr.src = 'https://cdn.discordapp.com/attachments/624922182438617098/948614868838269009/plugGr.png';
+        images.plugGr.width = 100;
+        images.plugGr.height = 100;
+
+        images.ampouleOff = new Image();
+        images.ampouleOff.src = 'ampouleOff.svg';
+        images.ampouleOff.width = 100;
+        images.ampouleOff.height = 100;
+
+        images.ampouleOn = new Image();
+        images.ampouleOn.src = 'ampouleOn.svg';
+        images.ampouleOn.width = 100;
+        images.ampouleOn.height = 100;
+
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+
+        // resize canvas
+        canvas.width = 1200;
+        canvas.height = 700;
+
+        let draw = {
+            base: (ctx) => {
+                // define pos
+                iphone = {
+                    x: canvas.width * 0.1,
+                    y: canvas.height * 0.3,
+                }
+                alexa = {
+                    x: canvas.width * 0.1,
+                    y: canvas.height * 0.7,
+                }
+                cloud = {
+                    x: canvas.width * 0.3,
+                    y: canvas.height * 0.5,
+                }
+                lsPlug = [
+                    {
+                        x: canvas.width * 0.55,
+                        y: canvas.height * 0.2,
+                        state: "off",
+                    },
+                    {
+                        x: canvas.width * 0.55,
+                        y: canvas.height * 0.5,
+                        state: "on",
+                        gr: true,
+                    },
+                    {
+                        x: canvas.width * 0.55,
+                        y: canvas.height * 0.8,
+                        state: "on",
+                        gr: true,
+                    },
+                ]
+
+                draw.cloud(ctx, cloud.x, cloud.y);
+
+                draw.iphone(ctx, iphone.x, iphone.y);
+                draw.alexa(ctx, alexa.x, alexa.y);
+
+                lsPlug.forEach(plug => {
+                    draw.plug(ctx, plug.x, plug.y, plug.state, plug.gr);
+                });
+            },
+            iphone: (ctx, x, y) => {
+                let img = images.iphone;
+                ctx.drawImage(img, x - img.width / 2, y - img.height / 2, img.width, img.height);
+            },
+            alexa: (ctx, x, y) => {
+                let img = images.alexa;
+                ctx.drawImage(img, x - img.width / 2, y - img.height / 2, img.width, img.height);
+            },
+            cloud: (ctx, x, y) => {
+                let img = images.cloud;
+                ctx.drawImage(img, x - img.width / 2, y - img.height / 2, img.width, img.height);
+                img = images.wifi;
+                ctx.drawImage(img, x - img.width / 2, y - img.height / 2, img.width, img.height);
+            },
+            plug: (ctx, x, y, state, gr) => {
+                let img;
+                if (gr) {
+                    img = images.plugGr;
+                }
+                else {
+                    img = images.plug;
+                }
+                ctx.drawImage(img, x - img.width / 2, y - img.height / 2, img.width, img.height);
+                if (state == "on") {
+                    img = images.ampouleOn;
+                }
+                else {
+                    img = images.ampouleOff;
+                }
+                ctx.drawImage(img, x + img.width / 2.7, y - img.height / 2, img.width, img.height);
+            },
+        }
+
+        // interact
+        canvas.addEventListener("click", () => {
+            draw.base(ctx); 
+        });
+        // document.getElementById("init").addEventListener("click", () => {
+        //     draw.base(ctx);
+        // });
+
+        // let demo = () => {
+        //     console.log(1)
+        //     setTimeout(demo, 20)
+        // }
+
+        // setInterval(() => {
+        //     console.log(1)
+        // }, 20);
+    </script>
+</body>
+</html>

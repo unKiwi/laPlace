@@ -32,6 +32,7 @@
         // variable globale
         let afficherObj;
         let dernierObjetClique;
+        let ampouleEtat = [false, true, true, false];
 
         // définir le canvas
         let canvas = document.getElementById('canvas');
@@ -184,6 +185,12 @@
             ctx.drawImage(img, pos.x - img.width / 1.7 + img.width, pos.y - img.height / 2, img.width, img.height);
         }
 
+        // animation
+        let startAnimation = (obj1, obj2) => {
+            let etat = "createConnexion";
+            
+        }
+
         // activer l'interaction
         canvas.addEventListener("click", evt => {
             // iphone est cliqué
@@ -200,13 +207,45 @@
             ) {
                 dernierObjetClique = "alexa";
             }
+
             // prise 1 est cliqué
             else if (
                 (evt.offsetX > lsPos.prise1.x - images.prise.width / 2 && evt.offsetX < lsPos.prise1.x + images.prise.width / 2) &&
                 (evt.offsetY > lsPos.prise1.y - images.prise.height / 2 && evt.offsetY < lsPos.prise1.y + images.prise.height / 2)
             ) {
+                if (dernierObjetClique == "iphone") {
+
+                }
+
                 dernierObjetClique = "prise1";
             }
+            // prise groupe est cliqué
+            else if (
+                (evt.offsetX > lsPos.prise2.x - images.prise.width / 2 && evt.offsetX < lsPos.prise2.x + images.prise.width / 2) &&
+                (evt.offsetY > lsPos.prise2.y - images.prise.height / 2 && evt.offsetY < lsPos.prise3.y + images.prise.height / 2)
+            ) {
+                dernierObjetClique = "priseGr";
+            }
+
+            // ampoule 1 est cliqué
+            else if (
+                (evt.offsetX > lsPos.prise1.x + images.prise.width / 2) &&
+                (evt.offsetY > lsPos.prise1.y - images.prise.height / 2 && evt.offsetY < lsPos.prise1.y + images.prise.height / 2)
+            ) {
+                dernierObjetClique = "ampoule1";
+            }
+            // ampoule gtoupe est cliqué
+            else if (
+                (evt.offsetX > lsPos.prise2.x + images.prise.width / 2) &&
+                (evt.offsetY > lsPos.prise2.y - images.prise.height / 2 && evt.offsetY < lsPos.prise3.y + images.prise.height / 2)
+            ) {
+                dernierObjetClique = "ampouleGr";
+            }
+
+            else {
+                dernierObjetClique = "rien";
+            }
+
             console.log(dernierObjetClique)
         });
     </script>
